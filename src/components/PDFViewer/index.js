@@ -52,6 +52,7 @@ function PDFViewer() {
                 PDFDoc.getPDFForm(); 
                 /* ===== LEFT SIDEBAR - Insertions ===== */
                     function insertProgrammaticallyTextField(){
+                        // https://developers.foxit.com/developer-hub/document/pdf-sdk-web-basic-forms/?utm_source=webviewerdemo&utm_medium=referral&utm_campaign=basicformsarticle
                         var FieldTypes = UIExtension.PDFViewCtrl.PDF.form.constant.Field_Type; 
                         var formfiledsJson = [
                             { 
@@ -98,6 +99,179 @@ function PDFViewer() {
                     setController(baseController=>({
                         ...baseController,
                         insertTextField: insertProgrammaticallyTextField
+                    }));
+                    function insertProgrammaticallyCheckboxField(){
+                        var FieldTypes = UIExtension.PDFViewCtrl.PDF.form.constant.Field_Type; 
+                        var formfiledsJson = [ 
+                            { 
+                                pageIndex: 0, fieldName: 'newCheckBox', fieldType: FieldTypes.CheckBox, rect: { 
+                                    left: 200, 
+                                    right: 250, 
+                                    top: 530, 
+                                    bottom: 500, 
+                                } 
+                            }
+                        ]; 
+                        var taskList = [] 
+                        formfiledsJson.map(function (json) { 
+                            //PDFForm.addControl()  will create field if no field with same name exsits. 
+                            taskList.push(PDFForm.addControl(json.pageIndex, json.fieldName, json.fieldType, json.rect)); 
+                        }); 
+                        Promise.all(taskList).then(function (results) { 
+                            results.map(function (result,index) { 
+                                if(!result){ 
+                                    console.error("can't add control"); 
+                                    return; 
+                                } 
+                                var field = PDFForm.getField(formfiledsJson[index].fieldName) 
+                                // set field's properties (refer to api documents): 
+                                // field.setAction (type, data) 
+                                // field.setAlignment (alignment) 
+                                // field.setBorderColor (borderColor) 
+                                // field.setBorderStyle (strStyle) 
+                                // field.setFillColor (fillColor) 
+                                // field.setMaxLength (maxLength) 
+                                if (field.getType() == FieldTypes.ComboBox || 
+                                    field.getType() == FieldTypes.ListBox 
+                                ) { 
+                                    field.setOptions([ 
+                                        { label: '10', value: '10', selected: true, defaultSelected: true }, 
+                                        { label: '20', value: '20', selected: false, defaultSelected: false }, 
+                                        { label: '30', value: '30', selected: false, defaultSelected: false }, 
+                                        { label: '40', value: '40', selected: false, defaultSelected: false }]); 
+                                } 
+                                // field.setValue (value='', control=null) 
+                            }) 
+                        }); 
+                    }
+                    setController(baseController=>({
+                        ...baseController,
+                        insertCheckboxField: insertProgrammaticallyCheckboxField
+                    }));
+                    function insertProgrammaticallyRadioField(){
+                        var FieldTypes = UIExtension.PDFViewCtrl.PDF.form.constant.Field_Type; 
+                        var formfiledsJson = [ 
+                            { 
+                                pageIndex: 0, fieldName: 'newRadioButton', fieldType: FieldTypes.RadioButton, rect: { 
+                                    left: 300, 
+                                    right: 380, 
+                                    top: 530, 
+                                    bottom: 500, 
+                                } 
+                            }
+                        ]; 
+                        var taskList = [] 
+                        formfiledsJson.map(function (json) { 
+                            //PDFForm.addControl()  will create field if no field with same name exsits. 
+                            taskList.push(PDFForm.addControl(json.pageIndex, json.fieldName, json.fieldType, json.rect)); 
+                        }); 
+                        Promise.all(taskList).then(function (results) { 
+                            results.map(function (result,index) { 
+                                if(!result){ 
+                                    console.error("can't add control"); 
+                                    return; 
+                                } 
+                                var field = PDFForm.getField(formfiledsJson[index].fieldName) 
+                                // set field's properties (refer to api documents): 
+                                // field.setAction (type, data) 
+                                // field.setAlignment (alignment) 
+                                // field.setBorderColor (borderColor) 
+                                // field.setBorderStyle (strStyle) 
+                                // field.setFillColor (fillColor) 
+                                // field.setMaxLength (maxLength) 
+                                if (field.getType() == FieldTypes.ComboBox || 
+                                    field.getType() == FieldTypes.ListBox 
+                                ) { 
+                                    field.setOptions([ 
+                                        { label: '10', value: '10', selected: true, defaultSelected: true }, 
+                                        { label: '20', value: '20', selected: false, defaultSelected: false }, 
+                                        { label: '30', value: '30', selected: false, defaultSelected: false }, 
+                                        { label: '40', value: '40', selected: false, defaultSelected: false }]); 
+                                } 
+                                // field.setValue (value='', control=null) 
+                            }) 
+                        }); 
+                    }
+                    setController(baseController=>({
+                      ...baseController,
+                      insertRadioField: insertProgrammaticallyRadioField
+                    }));
+                    function insertProgrammaticallyDropdownField(){
+                        var FieldTypes = UIExtension.PDFViewCtrl.PDF.form.constant.Field_Type; 
+                        var formfiledsJson = [
+                            { 
+                                pageIndex: 0, fieldName: 'newComboBox', fieldType: FieldTypes.ComboBox, rect: { 
+                                    left: 400, 
+                                    right: 460, 
+                                    top: 530, 
+                                    bottom: 500, 
+                                } 
+                            }
+                        ]; 
+                        var taskList = [] 
+                        formfiledsJson.map(function (json) { 
+                            //PDFForm.addControl()  will create field if no field with same name exsits. 
+                            taskList.push(PDFForm.addControl(json.pageIndex, json.fieldName, json.fieldType, json.rect)); 
+                        }); 
+                        Promise.all(taskList).then(function (results) { 
+                            results.map(function (result,index) { 
+                                if(!result){ 
+                                    console.error("can't add control"); 
+                                    return; 
+                                } 
+                                var field = PDFForm.getField(formfiledsJson[index].fieldName) 
+                                // set field's properties (refer to api documents): 
+                                // field.setAction (type, data) 
+                                // field.setAlignment (alignment) 
+                                // field.setBorderColor (borderColor) 
+                                // field.setBorderStyle (strStyle) 
+                                // field.setFillColor (fillColor) 
+                                // field.setMaxLength (maxLength) 
+                                if (field.getType() == FieldTypes.ComboBox || 
+                                    field.getType() == FieldTypes.ListBox 
+                                ) { 
+                                    field.setOptions([ 
+                                        { label: '10', value: '10', selected: true, defaultSelected: true }, 
+                                        { label: '20', value: '20', selected: false, defaultSelected: false }, 
+                                        { label: '30', value: '30', selected: false, defaultSelected: false }, 
+                                        { label: '40', value: '40', selected: false, defaultSelected: false }]); 
+                                } 
+                                // field.setValue (value='', control=null) 
+                            }) 
+                        }); 
+                    }
+                    setController(baseController=>({
+                        ...baseController,
+                        insertDropdownField: insertProgrammaticallyDropdownField
+                    }));
+                    async function insertProgrammaticallySignatureField(){
+                        // https://developers.foxit.com/developer-hub/document/pdf-sdk-web-digital-signatures/?utm_source=webviewerdemo&utm_medium=referral&utm_campaign=digitalsignaturesarticle
+                        var signInfo = {
+                            filter: "Adobe.PPKLite",
+                            subfilter: "adbe.pkcs7.sha1",
+                            rect: { left: 10, bottom: 10, right: 300, top: 300 },
+                            pageIndex: 0,
+                            flag: 511,
+                            signer: "signer",
+                            reason: "reason",
+                            email: "email",
+                            distinguishName: "distinguishName",
+                            location: "loc",
+                            text: "text",
+                        };
+                        const signResult = await PDFDoc.sign(signInfo, (signInfo,buffer) => {
+                            return false;
+                        });
+                        const singedPDF = await pdfui.pdfViewer.openPDFByFile(signResult);
+                        var pdfform = await singedPDF.loadPDFForm();
+                        var verify = (signatureField, plainBuffer, signedData, hasDataOutOfScope) => {
+                            return false;
+                        };
+                        var result = singedPDF.verifySignature(pdfform.getField("Signature_0"), verify);
+                    }
+                    setController(baseController=>({
+                      ...baseController,
+                      insertSignatureField: insertProgrammaticallySignatureField
                     }));
                 /* ===== LEFT SIDEBAR - Insertions ===== */
             })
